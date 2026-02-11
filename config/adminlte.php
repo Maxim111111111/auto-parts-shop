@@ -514,6 +514,31 @@ return [
                 ],
             ],
         ],
+        'jqueryUi  ' => [
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => './vendor/jquery-ui/jquery-ui.min.css',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => './vendor/jquery-ui/jquery-ui.min.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => './vendor/jquery-ui/jquery-ui.structure.min.css',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => './vendor/jquery-ui/jquery-ui.theme.min.css',
+                ],
+            ],
+        ],
     ],
 
     /*
