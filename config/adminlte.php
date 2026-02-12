@@ -133,7 +133,7 @@ return [
     |
     */
 
-    'usermenu_enabled' => true,
+    'usermenu_enabled' => false,
     'usermenu_header' => false,
     'usermenu_header_class' => 'bg-primary',
     'usermenu_image' => false,
@@ -257,7 +257,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => 'home',
+    'dashboard_url' => '/admin',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -299,47 +299,22 @@ return [
     */
 
     'menu' => [
-        // Navbar items:
         [
-            'type' => 'navbar-search',
-            'text' => 'search',
-            'topnav_right' => true,
+            'text' => 'Дашборд',
+            'route' => 'main.index',
+            'icon' => 'fas fa-fw fa-gauge',
         ],
         [
-            'type' => 'fullscreen-widget',
-            'topnav_right' => true,
-        ],
-
-        // Sidebar items:
-        [
-            'text' => 'Заказы',
-            'url' => 'admin/orders',
-            'icon' => 'fas fa-fw fa-user',
-        ],
-        [
-            'text' => 'Товары',
-            'url' => 'admin/products',
-            'icon' => 'fas fa-fw fa-box',
+            'text' => 'Запчасти',
+            'route' => 'part.index',
+            'icon' => 'fas fa-fw fa-cogs',
+            'active' => ['parts*'],
         ],
         [
             'text' => 'Категории',
-            'url' => 'admin/categories',
+            'route' => 'category.index',
             'icon' => 'fas fa-fw fa-tags',
-        ],
-        [
-            'text' => 'Теги',
-            'url' => 'admin/tags',
-            'icon' => 'fas fa-fw fa-tags',
-        ],
-        [
-            'text' => 'Цвета',
-            'url' => 'admin/colors',
-            'icon' => 'fas fa-fw fa-palette',
-        ],
-        [
-            'text' => 'Пользователи',
-            'url' => 'admin/users',
-            'icon' => 'fas fa-fw fa-users',
+            'active' => ['categories*'],
         ],
     ],
 
