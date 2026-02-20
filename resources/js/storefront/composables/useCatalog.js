@@ -9,6 +9,15 @@ const products = ref([]);
 
 const normalize = (value) => Number(value || 0);
 
+const deriveBadge = (raw) => {
+  if (raw.badge) return raw.badge;
+
+  const stock = normalize(raw.stock);
+  if (stock <= 3) return 'Хит';
+  if (stock >= 15) return 'Новинка';
+  return '';
+};
+
 const transformProduct = (raw) => {
   const images = buildProductImages(raw);
 
@@ -22,6 +31,7 @@ const transformProduct = (raw) => {
     stock: normalize(raw.stock),
     description: raw.description || 'Качественная автозапчасть для ежедневной эксплуатации.',
     category: raw.category || 'Без категории',
+    badge: deriveBadge(raw),
     images,
     image: images[0],
   };

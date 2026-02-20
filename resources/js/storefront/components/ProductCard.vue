@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue';
 import { useCartStore } from '../stores/cart';
+import BaseButton from './BaseButton.vue';
 
 const props = defineProps({
   product: {
@@ -33,7 +34,17 @@ const stockClass = computed(() => {
   return 'badge success';
 });
 
+const badgeLabel = computed(() => {
+  if (props.product.badge) return props.product.badge;
+  if (props.product.stock <= 3) return 'Хит';
+  if (props.product.stock >= 15) return 'Новинка';
+  return '';
+});
+
+const isOutOfStock = computed(() => props.product.stock <= 0);
+
 const addToCart = () => {
+  if (isOutOfStock.value) return;
   cart.addItem(props.product, 1);
 };
 
@@ -41,9 +52,10 @@ const price = (value) => currency.format(Number(value || 0));
 </script>
 
 <template>
-  <article class="product-card">
+  <article class="product-card reveal-up">
     <RouterLink :to="{ name: 'product', params: { id: product.id } }" class="product-media">
       <img :src="product.image" :alt="product.name" loading="lazy" />
+      <span v-if="badgeLabel" class="product-badge">{{ badgeLabel }}</span>
     </RouterLink>
 
     <div class="product-content">
@@ -59,15 +71,15 @@ const price = (value) => currency.format(Number(value || 0));
       <p class="product-meta">{{ product.brand || 'Без бренда' }}</p>
       <p v-if="showCategory" class="product-meta">{{ product.category }}</p>
 
-      <div class="line-bottom">
+      <div class="product-price-block">
         <strong>{{ price(product.price) }}</strong>
         <span>{{ product.stock }} шт</span>
       </div>
     </div>
 
     <div class="product-actions">
-      <button type="button" class="btn btn-primary" @click="addToCart">Добавить в корзину</button>
-      <RouterLink :to="{ name: 'product', params: { id: product.id } }" class="btn btn-ghost">Подробнее</RouterLink>
+      <BaseButton variant="primary" size="sm" :disabled="isOutOfStock" @click="addToCart">Добавить</BaseButton>
+      <BaseButton variant="ghost" size="sm" :to="{ name: 'product', params: { id: product.id } }">Подробнее</BaseButton>
     </div>
   </article>
 </template>

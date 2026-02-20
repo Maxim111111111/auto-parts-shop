@@ -51,7 +51,7 @@ onMounted(ensureLoaded);
   <section class="container">
     <div class="section-head">
       <h1>{{ category?.title || 'Категория' }}</h1>
-      <RouterLink to="/catalog">Назад к каталогу</RouterLink>
+      <RouterLink to="/catalog" class="section-link">Назад к каталогу</RouterLink>
     </div>
 
     <p v-if="error" class="inline-error">{{ error }}</p>

@@ -58,7 +58,7 @@ onMounted(ensureLoaded);
   <section class="container">
     <div class="section-head">
       <h1>Каталог</h1>
-      <RouterLink to="/">На главную</RouterLink>
+      <RouterLink to="/" class="section-link">На главную</RouterLink>
     </div>
 
     <div class="filter-grid">

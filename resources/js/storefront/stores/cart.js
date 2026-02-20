@@ -70,6 +70,14 @@ export const useCartStore = defineStore('cart', {
       this.persist();
     },
 
+    setQuantity(id, value) {
+      const item = this.items.find((row) => row.id === parseNumber(id));
+      if (!item) return;
+
+      item.quantity = Math.max(1, parseNumber(value, 1));
+      this.persist();
+    },
+
     increment(id) {
       const item = this.items.find((row) => row.id === parseNumber(id));
       if (!item) return;

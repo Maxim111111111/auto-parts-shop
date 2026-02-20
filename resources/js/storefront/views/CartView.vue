@@ -1,4 +1,6 @@
 <script setup>
+import BaseButton from '../components/BaseButton.vue';
+import QuantitySelector from '../components/QuantitySelector.vue';
 import { useCartStore } from '../stores/cart';
 
 const cart = useCartStore();
@@ -20,33 +22,33 @@ const checkout = () => {
 </script>
 
 <template>
-  <section class="container">
+  <section class="container page-enter">
     <div class="section-head">
       <h1>Корзина</h1>
-      <RouterLink to="/catalog">Продолжить покупки</RouterLink>
+      <RouterLink to="/catalog" class="section-link">Продолжить покупки</RouterLink>
     </div>
 
-    <div v-if="cart.items.length === 0" class="empty-box">
-      <p>Корзина пуста.</p>
-      <RouterLink to="/catalog" class="btn btn-primary">Перейти в каталог</RouterLink>
+    <div v-if="cart.items.length === 0" class="empty-box reveal-up">
+      <p>Корзина пока пустая.</p>
+      <BaseButton :to="{ name: 'catalog' }" variant="primary">Перейти в каталог</BaseButton>
     </div>
 
     <div v-else class="cart-layout">
       <div class="cart-list">
-        <article v-for="item in cart.items" :key="item.id" class="cart-row">
-          <img :src="item.image" :alt="item.name" />
+        <article v-for="item in cart.items" :key="item.id" class="cart-row reveal-up">
+          <img :src="item.image" :alt="item.name" loading="lazy" />
 
           <div class="cart-main">
             <h3>{{ item.name }}</h3>
             <p class="sku">{{ item.sku }}</p>
-            <p>{{ price(item.price) }}</p>
+            <p class="product-meta">{{ price(item.price) }}</p>
           </div>
 
-          <div class="qty-controls">
-            <button type="button" @click="cart.decrement(item.id)">-</button>
-            <span>{{ item.quantity }}</span>
-            <button type="button" @click="cart.increment(item.id)">+</button>
-          </div>
+          <QuantitySelector
+            :model-value="item.quantity"
+            :min="1"
+            @update:model-value="cart.setQuantity(item.id, $event)"
+          />
 
           <div class="cart-total">
             <strong>{{ price(item.price * item.quantity) }}</strong>
@@ -55,11 +57,12 @@ const checkout = () => {
         </article>
       </div>
 
-      <aside class="cart-summary">
-        <p>Товаров: <strong>{{ cart.totalItems }}</strong></p>
-        <p>Сумма: <strong>{{ price(cart.totalAmount) }}</strong></p>
+      <aside class="cart-summary reveal-up">
+        <p class="summary-line">Товаров: <strong>{{ cart.totalItems }}</strong></p>
+        <p class="summary-total">Итого: <strong>{{ price(cart.totalAmount) }}</strong></p>
 
-        <button type="button" class="btn btn-primary" @click="checkout">Оформить заказ</button>
+        <BaseButton variant="primary" size="lg" block @click="checkout">Оформить заказ</BaseButton>
+        <BaseButton variant="ghost" block @click="cart.clear">Очистить корзину</BaseButton>
       </aside>
     </div>
   </section>
