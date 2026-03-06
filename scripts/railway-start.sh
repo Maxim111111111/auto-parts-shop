@@ -28,5 +28,16 @@ fi
 php artisan optimize:clear
 php artisan config:cache
 
-echo "Starting HTTP server on 0.0.0.0:${PORT:-8080}"
-exec php artisan serve --host=0.0.0.0 --port="${PORT:-8080}"
+PORT_VALUE="${PORT:-8080}"
+
+if [[ "$PORT_VALUE" =~ :([0-9]{2,5})$ ]]; then
+  PORT_VALUE="${BASH_REMATCH[1]}"
+fi
+
+if ! [[ "$PORT_VALUE" =~ ^[0-9]+$ ]] || ((PORT_VALUE < 1 || PORT_VALUE > 65535)); then
+  echo "WARN: Invalid PORT value '${PORT:-}'. Falling back to 8080."
+  PORT_VALUE="8080"
+fi
+
+echo "Starting HTTP server on 0.0.0.0:${PORT_VALUE}"
+exec php artisan serve --host=0.0.0.0 --port="${PORT_VALUE}"
