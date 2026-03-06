@@ -68,3 +68,43 @@ composer test
 - 5 запчастей;
 - пользователя `test@example.com`.
 
+## Deploy на Render
+
+В проект добавлен `render.yaml` (Blueprint) и production `Dockerfile`.
+
+### 1) Подготовить репозиторий
+
+Убедитесь, что в репозитории есть файлы:
+
+- `render.yaml`
+- `Dockerfile`
+- `scripts/render-start.sh`
+
+### 2) Создать сервис через Blueprint
+
+В Render:
+
+1. New + -> Blueprint
+2. Подключить репозиторий
+3. Render создаст:
+   - web service `auto-parts-shop`
+   - postgres database `auto-parts-shop-db`
+
+### 3) Обязательные переменные
+
+Задайте в web service:
+
+- `APP_KEY` (сгенерировать локально: `php artisan key:generate --show`)
+- `APP_URL` (ваш Render URL)
+
+Остальные переменные подтягиваются из `render.yaml`.
+
+### 4) Первый запуск
+
+Стартовый скрипт:
+
+- прогоняет `php artisan migrate --force`;
+- собирает и кеширует конфиги/роуты/вью;
+- запускает приложение на `$PORT`.
+
+Проверка здоровья: `GET /auth/me`.
