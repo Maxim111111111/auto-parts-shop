@@ -20,23 +20,37 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if (config('database.default') !== 'sqlite') {
-            return;
-        }
+        $sqliteDefault = config('database.default') === 'sqlite';
 
-        $database = config('database.connections.sqlite.database');
+        // Guard against misconfigured production env where sqlite is selected
+        // but the app expects MySQL/PostgreSQL-backed sessions/cache/queue.
+        if ($sqliteDefault) {
+            if (config('session.driver') === 'database') {
+                config(['session.driver' => 'file']);
+            }
 
-        if (! is_string($database) || $database === ':memory:') {
-            return;
-        }
+            if (config('cache.default') === 'database') {
+                config(['cache.default' => 'file']);
+            }
 
-        $path = str_starts_with($database, DIRECTORY_SEPARATOR)
-            ? $database
-            : base_path($database);
+            if (config('queue.default') === 'database') {
+                config(['queue.default' => 'sync']);
+            }
 
-        if (! File::exists($path)) {
-            File::ensureDirectoryExists(dirname($path));
-            File::put($path, '');
+            $database = config('database.connections.sqlite.database');
+
+            if (! is_string($database) || $database === ':memory:') {
+                return;
+            }
+
+            $path = str_starts_with($database, DIRECTORY_SEPARATOR)
+                ? $database
+                : base_path($database);
+
+            if (! File::exists($path)) {
+                File::ensureDirectoryExists(dirname($path));
+                File::put($path, '');
+            }
         }
     }
 }
