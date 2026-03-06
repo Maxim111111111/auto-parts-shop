@@ -17,9 +17,9 @@ class DatabaseSeeder extends Seeder
             PartSeeder::class,
         ]);
 
-        User::query()->firstOrCreate(
+        User::query()->updateOrCreate(
             ['email' => 'test@example.com'],
-            ['name' => 'Test User', 'password' => bcrypt('password')],
+            ['name' => 'Test User', 'password' => bcrypt('password'), 'is_admin' => true],
         );
     }
 }

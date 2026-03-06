@@ -11,9 +11,9 @@
   --line: #e7ecf5;
   --shadow-soft: 0 16px 40px rgba(25, 35, 60, 0.08);
   --shadow-hover: 0 22px 50px rgba(25, 35, 60, 0.14);
-  --radius-lg: 20px;
-  --radius-md: 16px;
-  --radius-sm: 12px;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 10px;
   --success-bg: #e8f7ee;
   --success-text: #0f8c44;
   --warning-bg: #fff3e6;
@@ -106,7 +106,7 @@ img {
   margin: 12px auto;
   padding: 10px 12px;
   min-height: 66px;
-  border-radius: 18px;
+  border-radius: 14px;
   background: var(--surface-glass);
   border: 1px solid rgba(255, 255, 255, 0.72);
   box-shadow: var(--shadow-soft);
@@ -125,7 +125,7 @@ img {
 .menu-btn {
   display: none;
   border: 0;
-  border-radius: 11px;
+  border-radius: 9px;
   padding: 11px 12px;
   background: var(--secondary);
   color: var(--text);
@@ -145,11 +145,18 @@ img {
   align-items: center;
   gap: 8px;
   padding: 10px 13px;
-  border-radius: 12px;
+  border-radius: 10px;
   color: var(--muted);
   font-size: 14px;
   font-weight: 600;
   transition: color 0.25s ease, background-color 0.25s ease;
+}
+
+.menu-link-button {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
 }
 
 .menu-link::after {
@@ -217,7 +224,7 @@ img {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 4px;
+  margin-bottom: 18px;
 }
 
 .section-head h1,
@@ -256,7 +263,7 @@ img {
   background:
     linear-gradient(135deg, rgba(43, 79, 255, 0.08), rgba(91, 123, 255, 0.04)),
     var(--surface);
-  border-radius: 26px;
+  border-radius: 22px;
   padding: clamp(22px, 3.4vw, 44px);
   box-shadow: var(--shadow-soft);
   overflow: hidden;
@@ -328,7 +335,7 @@ img {
 
 .hero-stats article {
   background: rgba(255, 255, 255, 0.85);
-  border-radius: 14px;
+  border-radius: 12px;
   padding: 12px;
 }
 
@@ -387,7 +394,7 @@ img {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
+  border-radius: 10px;
   background: var(--secondary);
   color: #2640a6;
   font-size: 12px;
@@ -414,7 +421,8 @@ img {
   position: relative;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  min-height: 190px;
+  aspect-ratio: 16 / 9;
+  max-height: 220px;
   box-shadow: var(--shadow-soft);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
@@ -614,7 +622,7 @@ input,
 select {
   width: 100%;
   min-height: 44px;
-  border-radius: 12px;
+  border-radius: 10px;
   border: 1px solid var(--line);
   background: #fff;
   color: var(--text);
@@ -667,7 +675,7 @@ select:focus {
 
 .main-photo {
   width: 100%;
-  border-radius: 14px;
+  border-radius: 12px;
   aspect-ratio: 5 / 4;
   object-fit: cover;
 }
@@ -681,7 +689,7 @@ select:focus {
 
 .thumb-btn {
   border: 1px solid transparent;
-  border-radius: 12px;
+  border-radius: 10px;
   background: #fff;
   padding: 0;
   overflow: hidden;
@@ -805,7 +813,7 @@ select:focus {
 }
 
 .spec-list li {
-  border-radius: 12px;
+  border-radius: 10px;
   background: #fafbff;
   padding: 10px 12px;
   display: flex;
@@ -843,7 +851,7 @@ select:focus {
 }
 
 .mini-card img {
-  border-radius: 12px;
+  border-radius: 10px;
   aspect-ratio: 4 / 3;
   object-fit: cover;
 }
@@ -951,7 +959,7 @@ select:focus {
 .cart-row img {
   width: 120px;
   height: 92px;
-  border-radius: 12px;
+  border-radius: 10px;
   object-fit: cover;
 }
 
@@ -1079,7 +1087,7 @@ select:focus {
   align-items: center;
   justify-content: center;
   border: 0;
-  border-radius: 12px;
+  border-radius: 10px;
   cursor: pointer;
   font: inherit;
   font-weight: 600;
@@ -1147,7 +1155,7 @@ select:focus {
   display: inline-flex;
   align-items: center;
   min-height: 42px;
-  border-radius: 12px;
+  border-radius: 10px;
   border: 1px solid var(--line);
   background: #fff;
   overflow: hidden;
@@ -1257,7 +1265,7 @@ select:focus {
     top: calc(100% + 10px);
     background: rgba(255, 255, 255, 0.95);
     border: 1px solid var(--line);
-    border-radius: 16px;
+  border-radius: 12px;
     box-shadow: var(--shadow-soft);
     padding: 8px;
     display: none;
@@ -1277,7 +1285,7 @@ select:focus {
   .hero-block {
     grid-template-columns: 1fr;
     padding: 22px 18px;
-    border-radius: 20px;
+    border-radius: 16px;
   }
 
   .hero-actions {

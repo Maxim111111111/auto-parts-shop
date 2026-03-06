@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Category;
 use App\Models\Part;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -11,11 +12,30 @@ class AdminPanelTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_dashboard_is_available(): void
+    private function createAdmin(): User
     {
-        $response = $this->get(route('main.index'));
+        return User::query()->create([
+            'name' => 'Admin',
+            'email' => 'admin@example.com',
+            'password' => 'secret123',
+            'is_admin' => true,
+        ]);
+    }
 
-        $response->assertOk();
+    public function test_dashboard_requires_admin_role(): void
+    {
+        $this->get(route('main.index'))->assertRedirect(route('login'));
+
+        $user = User::query()->create([
+            'name' => 'User',
+            'email' => 'user@example.com',
+            'password' => 'secret123',
+            'is_admin' => false,
+        ]);
+
+        $this->actingAs($user)->get(route('main.index'))->assertForbidden();
+
+        $this->actingAs($this->createAdmin())->get(route('main.index'))->assertOk();
     }
 
     public function test_storefront_pages_are_available(): void
@@ -50,9 +70,24 @@ class AdminPanelTest extends TestCase
         $this->get(route('storefront.part-data', $part))->assertNotFound();
     }
 
+    public function test_non_admin_cannot_access_admin_sections(): void
+    {
+        $user = User::query()->create([
+            'name' => 'User',
+            'email' => 'member@example.com',
+            'password' => 'secret123',
+            'is_admin' => false,
+        ]);
+
+        $this->actingAs($user)->get(route('category.index'))->assertForbidden();
+        $this->actingAs($user)->get(route('part.index'))->assertForbidden();
+    }
+
     public function test_category_crud_flow_works(): void
     {
-        $createResponse = $this->post(route('category.store'), [
+        $admin = $this->createAdmin();
+
+        $createResponse = $this->actingAs($admin)->post(route('category.store'), [
             'title' => 'Тестовая категория',
         ]);
 
@@ -61,14 +96,14 @@ class AdminPanelTest extends TestCase
 
         $category = Category::query()->where('title', 'Тестовая категория')->firstOrFail();
 
-        $updateResponse = $this->patch(route('category.update', $category), [
+        $updateResponse = $this->actingAs($admin)->patch(route('category.update', $category), [
             'title' => 'Обновленная категория',
         ]);
 
         $updateResponse->assertRedirect(route('category.show', $category));
         $this->assertDatabaseHas('categories', ['id' => $category->id, 'title' => 'Обновленная категория']);
 
-        $deleteResponse = $this->delete(route('category.delete', $category));
+        $deleteResponse = $this->actingAs($admin)->delete(route('category.delete', $category));
 
         $deleteResponse->assertRedirect(route('category.index'));
         $this->assertDatabaseMissing('categories', ['id' => $category->id]);
@@ -76,9 +111,10 @@ class AdminPanelTest extends TestCase
 
     public function test_part_crud_flow_works(): void
     {
+        $admin = $this->createAdmin();
         $category = Category::query()->create(['title' => 'Фильтры']);
 
-        $createResponse = $this->post(route('part.store'), [
+        $createResponse = $this->actingAs($admin)->post(route('part.store'), [
             'name' => 'Фильтр салона',
             'sku' => 'FLT-CAB-777',
             'brand' => 'MANN',
@@ -94,7 +130,7 @@ class AdminPanelTest extends TestCase
 
         $part = Part::query()->where('sku', 'FLT-CAB-777')->firstOrFail();
 
-        $updateResponse = $this->patch(route('part.update', $part), [
+        $updateResponse = $this->actingAs($admin)->patch(route('part.update', $part), [
             'name' => 'Фильтр салона угольный',
             'sku' => 'FLT-CAB-777',
             'brand' => 'MANN',
@@ -112,7 +148,7 @@ class AdminPanelTest extends TestCase
             'is_active' => 0,
         ]);
 
-        $deleteResponse = $this->delete(route('part.delete', $part));
+        $deleteResponse = $this->actingAs($admin)->delete(route('part.delete', $part));
 
         $deleteResponse->assertRedirect(route('part.index'));
         $this->assertDatabaseMissing('parts', ['id' => $part->id]);
