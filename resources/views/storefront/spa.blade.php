@@ -8,6 +8,15 @@
     @vite(['resources/css/storefront.css', 'resources/js/storefront/spa.js'])
 </head>
 <body>
-    <div id="storefront-app"></div>
+    <div id="storefront-app">
+        <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:Inter,Segoe UI,sans-serif;color:#111827;">
+            Загрузка витрины...
+        </div>
+    </div>
+    <noscript>
+        <div style="padding:20px;font-family:Inter,Segoe UI,sans-serif;">
+            Для работы сайта включите JavaScript в браузере.
+        </div>
+    </noscript>
 </body>
 </html>
