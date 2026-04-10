@@ -60,6 +60,18 @@ npm run dev
 composer test
 ```
 
+## Деплой
+
+Для обычного shared hosting есть отдельная инструкция:
+
+- `docs/shared-hosting-deploy.md`
+- `.env.production.example`
+
+Для Railway:
+
+- `docs/railway-deploy.md`
+- `.env.railway.example`
+
 ## Демо-данные
 
 Сидер `DatabaseSeeder` создаёт:

@@ -12,6 +12,10 @@ class DatabaseSeeder extends Seeder
 
     public function run(): void
     {
+        if (app()->environment('production') && ! filter_var((string) env('SEED_DEMO_DATA', 'false'), FILTER_VALIDATE_BOOL)) {
+            return;
+        }
+
         $this->call([
             CategorySeeder::class,
             PartSeeder::class,
